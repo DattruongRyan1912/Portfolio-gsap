@@ -1,21 +1,21 @@
-import Link from 'next/link';
 import type { Locale, SiteCopy } from '../content';
 import { LocaleSwitch } from './LocaleSwitch';
+import { TransitionLink } from './TransitionLink';
 
 export function SiteHeader({ copy, locale }: { copy: SiteCopy; locale: Locale }) {
   return (
     <header className="site-header" data-header>
-      <Link className="brand" href="/" prefetch={false} aria-label="Dat Truong — home">
+      <TransitionLink className="brand" href="/" aria-label="Dat Truong — home">
         <span className="brand-mark" aria-hidden="true">
           DT
         </span>
         <span className="brand-name">Dat Truong</span>
-      </Link>
+      </TransitionLink>
       <nav className="site-nav" aria-label="Primary">
-        <Link href="/#projects" prefetch={false}>{copy.nav.projects}</Link>
-        <Link href="/#stack" prefetch={false}>{copy.nav.stack}</Link>
-        <Link href="/#infrastructure" prefetch={false}>{copy.nav.infra}</Link>
-        <Link href="/#contact" prefetch={false}>{copy.nav.contact}</Link>
+        <TransitionLink href="/#projects">{copy.nav.projects}</TransitionLink>
+        <TransitionLink href="/#stack">{copy.nav.stack}</TransitionLink>
+        <TransitionLink href="/#infrastructure">{copy.nav.infra}</TransitionLink>
+        <TransitionLink href="/#contact">{copy.nav.contact}</TransitionLink>
       </nav>
       <LocaleSwitch locale={locale} label={copy.nav.language} />
     </header>

@@ -78,6 +78,14 @@ a {
 }
 
 /* Header */
+/* Sections the header links to: stop below the sticky header, not under it. */
+#projects,
+#stack,
+#infrastructure,
+#contact {
+  scroll-margin-top: calc(var(--header) + 12px);
+}
+
 .site-header {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
@@ -909,6 +917,8 @@ a {
 
 .project-sections {
   display: grid;
+  /* An implicit column would grow to the architecture diagram's fixed width and push the page sideways on phones. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 48px;
 }
 

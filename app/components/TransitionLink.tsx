@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { CSSProperties, MouseEvent, ReactNode } from 'react';
 
@@ -15,37 +14,66 @@ type Props = {
   'data-tile'?: string;
 };
 
+type ViewTransition = { finished: Promise<void>; ready: Promise<void>; updateCallbackDone: Promise<void> };
 type ViewTransitionDocument = Document & {
-  startViewTransition?: (update: () => Promise<void> | void) => { finished: Promise<void> };
+  startViewTransition?: (update: () => Promise<void> | void) => ViewTransition;
 };
 
-/** Resolves once the page for `href` has rendered (its <main> carries data-route), or after a timeout. */
-function waitForRoute(href: string, timeoutMs = 2000): Promise<void> {
-  const started = performance.now();
+/**
+ * Resolves once the page for `path` has rendered (its <main> carries data-route), or after a timeout.
+ *
+ * Must not wait on requestAnimationFrame: while a view transition waits for its DOM update the browser stops
+ * painting, so frame callbacks stop too and the transition would only end when the browser gives up after 4s.
+ */
+function waitForRoute(path: string, timeoutMs = 2000): Promise<void> {
   return new Promise((resolve) => {
-    const check = () => {
-      const main = document.querySelector<HTMLElement>('main[data-route]');
-      if (main?.dataset.route === href || performance.now() - started > timeoutMs) resolve();
-      else requestAnimationFrame(check);
-    };
-    requestAnimationFrame(check);
+    const arrived = () => document.querySelector<HTMLElement>('main[data-route]')?.dataset.route === path;
+    const observer = new MutationObserver(() => {
+      if (arrived()) finish();
+    });
+    const timer = setTimeout(finish, timeoutMs);
+    function finish() {
+      clearTimeout(timer);
+      observer.disconnect();
+      resolve();
+    }
+    if (arrived()) {
+      finish();
+      return;
+    }
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-route'] });
   });
 }
 
 /**
- * A link that morphs the clicked tile's media and title into the next page with the View Transitions API.
- * Falls back to a normal navigation when the API is missing, motion is reduced, or the click is modified.
+ * The one link used for in-app navigation. It is a plain <a>, so it works before hydration and when opened in a new
+ * tab, and every ordinary click goes through the router here.
+ *
+ * It does not use next/link: in the production build of vinext 1.0.0-beta.3 the client navigation behind <Link>
+ * throws ("e is not a function") and the click does nothing at all.
+ *
+ * When the browser supports the View Transitions API and motion is allowed, the clicked tile's media and title
+ * morph into the next page; otherwise the page simply changes.
  */
 export function TransitionLink({ href, children, ...rest }: Props) {
   const router = useRouter();
 
   const onClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    const doc = document as ViewTransitionDocument;
     const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
-    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (modified || calm || !doc.startViewTransition) return;
+    if (modified || event.defaultPrevented) return;
+
+    const target = new URL(href, window.location.origin);
+    // A section of the page we are already on: the browser scrolls to it natively.
+    if (target.pathname === window.location.pathname && target.hash) return;
 
     event.preventDefault();
+    const doc = document as ViewTransitionDocument;
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (calm || !doc.startViewTransition) {
+      router.push(href);
+      return;
+    }
+
     // Names must be unique on the outgoing page; clear the ones a project page sets on its own title and media.
     document.querySelectorAll<HTMLElement>('[style*="view-transition-name"]').forEach((element) => {
       element.style.viewTransitionName = 'none';
@@ -56,15 +84,17 @@ export function TransitionLink({ href, children, ...rest }: Props) {
     if (media) media.style.viewTransitionName = 'project-media';
     if (title) title.style.viewTransitionName = 'project-title';
 
-    doc.startViewTransition(async () => {
+    const transition = doc.startViewTransition(async () => {
       router.push(href);
-      await waitForRoute(href);
+      await waitForRoute(target.pathname);
     });
+    // A skipped or interrupted transition rejects these; the navigation itself has still happened.
+    for (const promise of [transition.ready, transition.finished, transition.updateCallbackDone]) promise.catch(() => {});
   };
 
   return (
-    <Link href={href} prefetch={false} onClick={onClick} {...rest}>
+    <a href={href} onClick={onClick} {...rest}>
       {children}
-    </Link>
+    </a>
   );
 }

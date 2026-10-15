@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArchDiagram } from '../../components/ArchDiagram';
 import { ProjectMotion } from '../../components/ProjectMotion';
@@ -57,9 +56,9 @@ export default async function ProjectPage({ params }: Params) {
   return (
     <main id="main" data-route={`/projects/${project.slug}`} className="project" style={{ ['--accent' as string]: project.color }}>
       <ProjectMotion key={project.slug}>
-        <Link className="back-link" href="/#projects" prefetch={false}>
+        <TransitionLink className="back-link" href="/#projects">
           <span aria-hidden="true">←</span> {copy.common.allProjects}
-        </Link>
+        </TransitionLink>
 
         <header className="project-hero">
           <div className="project-intro">

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { TransitionLink } from './components/TransitionLink';
 import { siteCopy } from './content';
 import { getLocale } from './locale';
 
@@ -10,9 +10,9 @@ export default async function NotFound() {
       <p className="not-found-code">404</p>
       <h1>{common.notFoundTitle}</h1>
       <p>{common.notFoundBody}</p>
-      <Link className="button button-solid" href="/" prefetch={false}>
+      <TransitionLink className="button button-solid" href="/">
         {common.backHome}
-      </Link>
+      </TransitionLink>
     </main>
   );
 }
