@@ -14,6 +14,10 @@ test.describe('language', () => {
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('lang', 'vi');
     await expect(page.getByRole('heading', { name: 'Bài toán' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Trang giới thiệu' })).toHaveAttribute(
+      'href',
+      'https://toeicmaster.truongquocdat.id.vn/',
+    );
   });
 
   test.describe('with a Vietnamese browser', () => {

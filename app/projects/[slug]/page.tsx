@@ -77,6 +77,11 @@ export default async function ProjectPage({ params }: Params) {
                   {project.repoUrl ? copy.common.openSite : copy.common.landingPage} <span aria-hidden="true">↗</span>
                 </a>
               )}
+              {project.landingUrl && (
+                <a className="button button-ghost" href={project.landingUrl} target="_blank" rel="noreferrer">
+                  {copy.common.landingPage} <span aria-hidden="true">↗</span>
+                </a>
+              )}
               {project.repoUrl ? (
                 <a className="button button-ghost" href={project.repoUrl} target="_blank" rel="noreferrer">
                   {copy.common.source} <span aria-hidden="true">↗</span>

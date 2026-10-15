@@ -42,6 +42,8 @@ export type Project = {
   stack: readonly string[];
   repoUrl?: string;
   liveUrl?: string;
+  /** A separate marketing page, for projects that have one besides the app itself. */
+  landingUrl?: string;
   media: { video: string; poster: string };
   copy: Record<Locale, ProjectCopy>;
 };
@@ -185,6 +187,7 @@ export const projects: readonly Project[] = [
     stack: ['Next.js', 'FastAPI', 'Python', 'SQLAlchemy', 'SQLite', 'Gemini API', 'Docker'],
     repoUrl: 'https://github.com/DattruongRyan1912/toeic-lab',
     liveUrl: 'https://toeic.truongquocdat.id.vn/',
+    landingUrl: 'https://toeicmaster.truongquocdat.id.vn/',
     media: { video: '/media/projects/toeic-master.mp4', poster: '/media/projects/toeic-master.jpg' },
     copy: {
       en: {
