@@ -109,6 +109,8 @@ export const projects: readonly Project[] = [
         ],
         results: [
           'Live at tiendataudioquangngai.id.vn behind Cloudflare and HTTPS.',
+          'Ranks well in search for competitive local keywords such as “loa Quảng Ngãi” and “audio Quảng Ngãi”.',
+          'AI search engines recommend the site for those same keywords, so the work pays off in generative engine optimization (GEO) as well as classic SEO.',
           '24 public page routes: products, combos, knowledge articles, brands, and local-area pages.',
           'An admin CMS for products, combos, posts, taxonomy, orders, SEO, and social posts.',
           'Automated tests for SEO strategy, content, local SEO, and the assistant’s retrieval and tools.',
@@ -167,6 +169,8 @@ export const projects: readonly Project[] = [
         ],
         results: [
           'Đang chạy tại tiendataudioquangngai.id.vn sau Cloudflare và HTTPS.',
+          'Có thứ hạng tốt trên công cụ tìm kiếm ở các từ khoá cạnh tranh tại địa phương như “loa Quảng Ngãi” và “audio Quảng Ngãi”.',
+          'Các công cụ tìm kiếm bằng AI cũng đề xuất website cho chính những từ khoá này, nghĩa là hiệu quả tốt ở cả SEO truyền thống lẫn GEO (tối ưu cho công cụ tìm kiếm AI).',
           '24 route trang công khai: sản phẩm, combo, bài kiến thức, thương hiệu và trang theo khu vực.',
           'CMS quản trị sản phẩm, combo, bài viết, taxonomy, đơn hàng, SEO và bài mạng xã hội.',
           'Test tự động cho chiến lược SEO, nội dung, SEO địa phương và phần truy xuất, tool của trợ lý.',
