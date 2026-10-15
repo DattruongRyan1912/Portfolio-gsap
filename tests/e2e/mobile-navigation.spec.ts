@@ -1,6 +1,42 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const slugs = ['tien-dat-audio', 'toeic-master', 'xtruyen', 'mynotch'];
+
+/**
+ * Arriving on the home page by a link (not by the browser's Back button) must leave it fully usable: the title is the
+ * home title, what is on screen has faded in, and so does everything further down once scrolled to.
+ */
+async function expectHomeFullyRevealed(page: Page) {
+  await expect(page).toHaveTitle(/Backend Developer/);
+  await expect
+    .poll(
+      () =>
+        page.locator('[data-reveal]').evaluateAll((elements) => {
+          const onScreen = elements.filter((element) => {
+            const box = element.getBoundingClientRect();
+            return box.bottom > 0 && box.top < window.innerHeight;
+          });
+          return Math.min(1, ...onScreen.map((element) => Number(getComputedStyle(element).opacity)));
+        }),
+      { timeout: 8000 },
+    )
+    .toBeGreaterThan(0.95);
+
+  const height = await page.evaluate(() => document.documentElement.scrollHeight);
+  for (let y = 0; y < height; y += 450) {
+    await page.mouse.wheel(0, 450);
+    await page.waitForTimeout(80);
+  }
+  await expect
+    .poll(
+      () =>
+        page.locator('[data-reveal]').evaluateAll((elements) =>
+          Math.min(...elements.map((element) => Number(getComputedStyle(element).opacity))),
+        ),
+      { timeout: 8000 },
+    )
+    .toBeGreaterThan(0.95);
+}
 
 // Compares against the configured width on purpose: with `isMobile`, the browser stretches `innerWidth` to fit
 // overflowing content, which would hide the very bug this guards against.
@@ -36,6 +72,7 @@ test.describe('getting back to the home page', () => {
     await expect(page).toHaveURL(/\/#projects$/);
     await expect(page.locator('main[data-route="/"]')).toBeVisible();
     await expect(page.locator('[data-tile="mynotch"]')).toBeVisible();
+    await expectHomeFullyRevealed(page);
   });
 
   test('the logo returns to the home page', async ({ page }) => {
@@ -43,6 +80,7 @@ test.describe('getting back to the home page', () => {
     await page.getByRole('link', { name: 'Dat Truong — home' }).click();
     await expect(page).toHaveURL(/\/$/);
     await expect(page.locator('main[data-route="/"]')).toBeVisible();
+    await expectHomeFullyRevealed(page);
   });
 
   test('the back link scrolls to the projects, not the top, when it lands on the home page', async ({ page }) => {
@@ -71,6 +109,7 @@ test('a header link on a project page leads to its section on the home page', as
   await expect
     .poll(async () => (await page.locator('#stack').boundingBox())?.y ?? 9999, { timeout: 5000 })
     .toBeLessThan(400);
+  await expectHomeFullyRevealed(page);
 });
 
 test('a header link on the home page scrolls to its section', async ({ page }) => {
