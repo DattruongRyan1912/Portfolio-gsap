@@ -739,7 +739,7 @@ export default function Home() {
                                   {copy.common.live} ↗
                                 </a>
                               )}
-                              {!project.repoUrl && !project.liveUrl && (
+                              {!project.repoUrl && (
                                 <span className="project-status">{copy.common.privateRepo}</span>
                               )}
                             </div>
