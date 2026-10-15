@@ -45,6 +45,7 @@ export default function Home() {
   const [activeProject, setActiveProject] = useState(0);
   const copy = portfolioContent[locale];
   const projects = copy.projects.items as readonly Project[];
+  const projectCount = String(projects.length).padStart(2, '0');
 
   useEffect(() => {
     const saved = window.localStorage.getItem('portfolio-locale');
@@ -728,13 +729,18 @@ export default function Home() {
                               {project.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
                             </ul>
                             <div className="project-links">
-                              <a href={project.repoUrl} target="_blank" rel="noreferrer">
-                                {copy.common.source} ↗
-                              </a>
+                              {project.repoUrl && (
+                                <a href={project.repoUrl} target="_blank" rel="noreferrer">
+                                  {copy.common.source} ↗
+                                </a>
+                              )}
                               {project.liveUrl && (
                                 <a href={project.liveUrl} target="_blank" rel="noreferrer">
                                   {copy.common.live} ↗
                                 </a>
+                              )}
+                              {!project.repoUrl && !project.liveUrl && (
+                                <span className="project-status">{copy.common.privateRepo}</span>
                               )}
                             </div>
                           </div>
@@ -743,13 +749,13 @@ export default function Home() {
                     );
                   })}
                   <div className="project-track-end" aria-hidden="true">
-                    <span>END / 04</span>
+                    <span>END / {projectCount}</span>
                   </div>
                 </div>
 
                 <div className="project-controls">
                   <button type="button" onClick={() => goToProject(-1)} aria-label={copy.common.previous}>←</button>
-                  <span>{String(activeProject + 1).padStart(2, '0')} / 04</span>
+                  <span>{String(activeProject + 1).padStart(2, '0')} / {projectCount}</span>
                   <button type="button" onClick={() => goToProject(1)} aria-label={copy.common.next}>→</button>
                 </div>
               </div>

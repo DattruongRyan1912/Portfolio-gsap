@@ -25,7 +25,7 @@ export type ProcessStep = {
 };
 
 export type Project = {
-  id: 'dev-english' | 'tien-dat-audio' | 'chat-realtime' | 'xtruyen';
+  id: 'dev-english' | 'tien-dat-audio' | 'chat-realtime' | 'xtruyen' | 'mynotch';
   index: string;
   title: string;
   category: string;
@@ -34,7 +34,7 @@ export type Project = {
   detail: string;
   highlights: readonly string[];
   stack: readonly string[];
-  repoUrl: string;
+  repoUrl?: string;
   liveUrl?: string;
 };
 
@@ -48,6 +48,7 @@ export type PortfolioContent = {
     collapseProject: string;
     source: string;
     live: string;
+    privateRepo: string;
     next: string;
     previous: string;
   };
@@ -120,6 +121,7 @@ export const portfolioContent = {
       collapseProject: 'Close project details',
       source: 'Source code',
       live: 'Live website',
+      privateRepo: 'Private repository · In development',
       next: 'Next project',
       previous: 'Previous project',
     },
@@ -219,7 +221,7 @@ export const portfolioContent = {
       eyebrow: '04 / Selected work',
       title: 'Systems, products, and technical research.',
       lead:
-        'Four public projects showing how I approach backend architecture, delivery, real-time systems, and evidence-driven product analysis.',
+        'Four public projects and one product in development, showing how I approach backend architecture, delivery, real-time systems, evidence-driven product analysis, and modular native apps.',
       hint: 'Scroll, drag, or use the arrow keys',
       items: [
         {
@@ -279,6 +281,19 @@ export const portfolioContent = {
           stack: ['Product analysis', 'System design', 'UX research', 'Technical writing'],
           repoUrl: 'https://github.com/DattruongRyan1912/xtruyen',
         },
+        {
+          id: 'mynotch',
+          index: '05',
+          title: 'MyNotch',
+          category: 'macOS product',
+          year: '2026',
+          summary:
+            'A modular macOS app that turns the MacBook notch into a workspace for music, clipboard, calendar, timers, battery, files, and AI agent status.',
+          detail:
+            'Built with Swift 6 and SwiftUI for macOS 26. Fourteen feature modules, from Clipboard and Media to Calendar, Screenshot, Translation, and AI agents, each live in their own Swift package behind one module contract, and no module imports another. A permission center asks only for what the enabled modules need, and no data leaves the device by default.',
+          highlights: ['14 isolated feature modules', 'Permissions scoped per module', 'Local-first, no network by default'],
+          stack: ['Swift 6', 'SwiftUI', 'AppKit', 'Swift Packages', 'Swift Testing', 'XcodeGen'],
+        },
       ],
     },
     contact: {
@@ -307,6 +322,7 @@ export const portfolioContent = {
       collapseProject: 'Đóng chi tiết dự án',
       source: 'Mã nguồn',
       live: 'Website thực tế',
+      privateRepo: 'Repository riêng tư · Đang phát triển',
       next: 'Dự án tiếp theo',
       previous: 'Dự án trước',
     },
@@ -406,7 +422,7 @@ export const portfolioContent = {
       eyebrow: '04 / Dự án chọn lọc',
       title: 'Hệ thống, sản phẩm và nghiên cứu kỹ thuật.',
       lead:
-        'Bốn dự án công khai thể hiện cách tôi tiếp cận kiến trúc backend, delivery, hệ thống realtime và phân tích sản phẩm dựa trên bằng chứng.',
+        'Bốn dự án công khai và một sản phẩm đang phát triển, thể hiện cách tôi tiếp cận kiến trúc backend, delivery, hệ thống realtime, phân tích sản phẩm dựa trên bằng chứng và ứng dụng native chia module.',
       hint: 'Cuộn, kéo hoặc dùng phím mũi tên',
       items: [
         {
@@ -465,6 +481,19 @@ export const portfolioContent = {
           highlights: ['Phát hiện gắn evidence', 'Đặc tả triển khai 21 phần', 'Ranh giới observed/inferred rõ ràng'],
           stack: ['Product analysis', 'System design', 'UX research', 'Technical writing'],
           repoUrl: 'https://github.com/DattruongRyan1912/xtruyen',
+        },
+        {
+          id: 'mynotch',
+          index: '05',
+          title: 'MyNotch',
+          category: 'Sản phẩm macOS',
+          year: '2026',
+          summary:
+            'Ứng dụng macOS chia module, biến notch của MacBook thành chỗ làm việc cho nhạc, clipboard, lịch, hẹn giờ, pin, khay file và trạng thái AI agent.',
+          detail:
+            'Xây bằng Swift 6 và SwiftUI cho macOS 26. Mười bốn module tính năng, từ Clipboard, Media đến Lịch, Ảnh chụp, Dịch và AI agents, mỗi module là một Swift package riêng sau cùng một hợp đồng module, và không module nào import module khác. Trung tâm quyền chỉ xin những quyền mà module đang bật cần, và mặc định không có dữ liệu nào rời khỏi máy.',
+          highlights: ['14 module tính năng độc lập', 'Quyền tách theo từng module', 'Ưu tiên local, mặc định không gửi dữ liệu'],
+          stack: ['Swift 6', 'SwiftUI', 'AppKit', 'Swift Packages', 'Swift Testing', 'XcodeGen'],
         },
       ],
     },
