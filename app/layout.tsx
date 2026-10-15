@@ -12,7 +12,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const siteUrl = process.env.SITE_URL ?? 'https://portfolio.truongquocdat.id.vn';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'Dat Truong (Ryan) — Backend Developer',
     template: '%s · Dat Truong',
