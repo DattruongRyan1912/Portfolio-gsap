@@ -192,7 +192,7 @@ export const projects: readonly Project[] = [
     repoUrl: 'https://github.com/DattruongRyan1912/toeic-lab',
     liveUrl: 'https://toeic.truongquocdat.id.vn/',
     landingUrl: 'https://toeicmaster.truongquocdat.id.vn/',
-    media: { video: '/media/projects/toeic-master.mp4', poster: '/media/projects/toeic-master.jpg' },
+    media: { video: '/media/projects/toeic-master.mp4?v=2', poster: '/media/projects/toeic-master.jpg?v=2' },
     copy: {
       en: {
         category: 'AI learning platform',
