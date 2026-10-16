@@ -936,8 +936,36 @@ a {
   color: var(--soft);
 }
 
-.diagram-scroll {
+.diagram-frame {
+  position: relative;
   margin-top: 22px;
+}
+
+/* While the diagram continues to the right, fade its edge. */
+.diagram-frame[data-more='true']::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 48px;
+  border-radius: 0 17px 17px 0;
+  background: linear-gradient(to right, transparent, var(--tile));
+  pointer-events: none;
+}
+
+.diagram-hint {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--subtle);
+}
+
+.diagram-hint[hidden] {
+  display: none;
+}
+
+.diagram-scroll {
   padding: 18px;
   overflow-x: auto;
   background: var(--tile);

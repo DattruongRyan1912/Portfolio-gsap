@@ -183,3 +183,66 @@ test.describe('opening a project', () => {
     });
   });
 });
+
+test.describe('the architecture diagram says when it scrolls', () => {
+  for (const width of [375, 1440]) {
+    for (const slug of slugs) {
+      test(`${slug} at ${width}px shows the hint exactly when the diagram overflows its box`, async ({ page }) => {
+        await page.setViewportSize({ width, height: 800 });
+        await page.goto(`/projects/${slug}`);
+        await page.waitForLoadState('networkidle');
+        const canScroll = await page
+          .locator('.diagram-scroll')
+          .evaluate((element) => element.scrollWidth > element.clientWidth + 4);
+        const hint = page.locator('.diagram-hint');
+        if (canScroll) await expect(hint).toBeVisible();
+        else await expect(hint).toBeHidden();
+      });
+    }
+  }
+
+  test('the hint and the faded edge go away at the end of the diagram and return at the start', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto('/projects/toeic-master');
+    const frame = page.locator('.diagram-frame');
+    const box = page.locator('.diagram-scroll');
+    await expect(page.locator('.diagram-hint')).toBeVisible();
+    await expect(frame).toHaveAttribute('data-more', 'true');
+
+    await box.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await expect(page.locator('.diagram-hint')).toBeHidden();
+    await expect(frame).toHaveAttribute('data-more', 'false');
+
+    await box.evaluate((element) => {
+      element.scrollLeft = 0;
+    });
+    await expect(page.locator('.diagram-hint')).toBeVisible();
+    await expect(frame).toHaveAttribute('data-more', 'true');
+  });
+
+  test('the box can be scrolled with the keyboard', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto('/projects/toeic-master');
+    await page.waitForLoadState('networkidle');
+    const box = page.locator('.diagram-scroll');
+    await box.focus();
+    for (let press = 0; press < 4; press++) await page.keyboard.press('ArrowRight');
+    await expect.poll(() => box.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  });
+
+  test.describe('in Vietnamese', () => {
+    test.use({ locale: 'vi-VN' });
+    test('the hint is translated', async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 800 });
+      await page.goto('/projects/toeic-master');
+      await expect(page.locator('.diagram-hint')).toContainText('Cuộn ngang để xem toàn bộ sơ đồ');
+    });
+  });
+});
+
+test('the infrastructure tile lists the TOEIC Master landing page', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.infra-hosts').getByText('toeicmaster.truongquocdat.id.vn')).toBeVisible();
+});

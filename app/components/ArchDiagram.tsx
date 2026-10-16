@@ -1,4 +1,5 @@
 import type { Diagram } from '../projects';
+import { DiagramScroller } from './DiagramScroller';
 
 const NODE_W = 150;
 const NODE_H = 54;
@@ -11,7 +12,17 @@ function position(col: number, row: number) {
 }
 
 /** A left-to-right block diagram laid out from column/row positions in the project data. */
-export function ArchDiagram({ diagram, color, label }: { diagram: Diagram; color: string; label: string }) {
+export function ArchDiagram({
+  diagram,
+  color,
+  label,
+  hint,
+}: {
+  diagram: Diagram;
+  color: string;
+  label: string;
+  hint: string;
+}) {
   const byId = new Map(diagram.nodes.map((node) => [node.id, node]));
   const cols = Math.max(...diagram.nodes.map((node) => node.col)) + 1;
   const rows = Math.max(...diagram.nodes.map((node) => node.row)) + 1;
@@ -19,7 +30,7 @@ export function ArchDiagram({ diagram, color, label }: { diagram: Diagram; color
   const height = PAD * 2 + rows * NODE_H + (rows - 1) * ROW_GAP;
 
   return (
-    <div className="diagram-scroll">
+    <DiagramScroller label={label} hint={hint}>
       <svg
         className="diagram"
         viewBox={`0 0 ${width} ${height}`}
@@ -71,6 +82,6 @@ export function ArchDiagram({ diagram, color, label }: { diagram: Diagram; color
           );
         })}
       </svg>
-    </div>
+    </DiagramScroller>
   );
 }

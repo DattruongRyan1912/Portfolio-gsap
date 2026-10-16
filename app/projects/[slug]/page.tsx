@@ -132,7 +132,12 @@ export default async function ProjectPage({ params }: Params) {
             <section id="architecture" className="project-section" data-reveal>
               <h2>{sections.architecture}</h2>
               <p>{text.architectureNote}</p>
-              <ArchDiagram diagram={text.diagram} color={project.color} label={`${sections.architecture}: ${project.title}`} />
+              <ArchDiagram
+                diagram={text.diagram}
+                color={project.color}
+                label={`${sections.architecture}: ${project.title}`}
+                hint={copy.common.diagramHint}
+              />
             </section>
             <section id="decisions" className="project-section" data-reveal>
               <h2>{sections.decisions}</h2>

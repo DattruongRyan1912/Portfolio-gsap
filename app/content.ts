@@ -19,6 +19,7 @@ export type SiteCopy = {
     source: string;
     privateRepo: string;
     allProjects: string;
+  diagramHint: string;
     previous: string;
     next: string;
     role: string;
@@ -78,6 +79,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
       source: 'Source code',
       privateRepo: 'Private repository',
       allProjects: 'All projects',
+      diagramHint: 'Scroll sideways to see the whole diagram',
       previous: 'Previous project',
       next: 'Next project',
       role: 'Role',
@@ -127,6 +129,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
         { domain: 'portfolio.truongquocdat.id.vn', runtime: 'Next.js · systemd' },
         { domain: 'tiendataudioquangngai.id.vn', runtime: 'Next.js · systemd' },
         { domain: 'toeic.truongquocdat.id.vn', runtime: 'FastAPI · Docker Compose' },
+        { domain: 'toeicmaster.truongquocdat.id.vn', runtime: 'static · nginx container' },
         { domain: 'xtruyen.truongquocdat.id.vn', runtime: 'Go · Docker Compose' },
         { domain: 'mynotch.truongquocdat.id.vn', runtime: 'static · nginx container' },
       ],
@@ -182,6 +185,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
       source: 'Mã nguồn',
       privateRepo: 'Repository riêng tư',
       allProjects: 'Tất cả dự án',
+      diagramHint: 'Cuộn ngang để xem toàn bộ sơ đồ',
       previous: 'Dự án trước',
       next: 'Dự án tiếp',
       role: 'Vai trò',
@@ -231,6 +235,7 @@ export const siteCopy: Record<Locale, SiteCopy> = {
         { domain: 'portfolio.truongquocdat.id.vn', runtime: 'Next.js · systemd' },
         { domain: 'tiendataudioquangngai.id.vn', runtime: 'Next.js · systemd' },
         { domain: 'toeic.truongquocdat.id.vn', runtime: 'FastAPI · Docker Compose' },
+        { domain: 'toeicmaster.truongquocdat.id.vn', runtime: 'tĩnh · container nginx' },
         { domain: 'xtruyen.truongquocdat.id.vn', runtime: 'Go · Docker Compose' },
         { domain: 'mynotch.truongquocdat.id.vn', runtime: 'tĩnh · container nginx' },
       ],
